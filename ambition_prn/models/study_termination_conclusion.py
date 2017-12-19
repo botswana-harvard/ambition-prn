@@ -172,7 +172,7 @@ class StudyTerminationConclusion(ActionItemModelMixin, TrackingIdentifierModelMi
         return (self.tracking_identifier, )
 
     class Meta(OffstudyModelMixin.Meta):
-        visit_schedule_name = 'visit_schedule.'
+        visit_schedule_name = 'visit_schedule.schedule'
         consent_model = 'ambition_subject.subjectconsent'
         verbose_name = 'Study Termination/Conclusion'
         verbose_name_plural = 'Study Terminations/Conclusions'

@@ -3,6 +3,7 @@ from edc_action_item import Action, HIGH_PRIORITY, site_action_items
 
 PROTOCOL_DEVIATION_VIOLATION_ACTION = 'submit-protocol-deviation-violation'
 STUDY_TERMINATION_CONCLUSION_ACTION = 'submit-study-termination-conclusion'
+STUDY_TERMINATION_CONCLUSION_ACTION_W10 = 'submit-w10-study-termination-conclusion'
 
 
 class ProtocolDeviationViolationAction(Action):
@@ -21,5 +22,14 @@ class StudyTerminationConclusionAction(Action):
     priority = HIGH_PRIORITY
 
 
+class StudyTerminationConclusionW10Action(Action):
+    name = STUDY_TERMINATION_CONCLUSION_ACTION_W10
+    display_name = 'Submit W10 Study Termination/Conclusion Report'
+    model = 'ambition_prn.studyterminationconclusionw10'
+    show_on_dashboard = True
+    priority = HIGH_PRIORITY
+
+
 site_action_items.register(ProtocolDeviationViolationAction)
 site_action_items.register(StudyTerminationConclusionAction)
+site_action_items.register(StudyTerminationConclusionW10Action)

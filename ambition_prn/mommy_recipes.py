@@ -2,7 +2,7 @@ from edc_constants.constants import YES
 from faker import Faker
 from model_mommy.recipe import Recipe
 
-from .models import DeathReport, StudyTerminationConclusion
+from .models import DeathReport, StudyTerminationConclusion, StudyTerminationConclusionW10
 from .models import ProtocolDeviationViolation
 
 fake = Faker()
@@ -24,5 +24,7 @@ deathreport = Recipe(
         'adverse event resulted in death due to cryptococcal meningitis'))
 
 studyterminationconclusion = Recipe(StudyTerminationConclusion)
+
+studyterminationconclusionw10 = Recipe(StudyTerminationConclusionW10)
 
 protocoldeviationviolation = Recipe(ProtocolDeviationViolation)

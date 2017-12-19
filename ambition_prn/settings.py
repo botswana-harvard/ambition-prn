@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'edc_device.apps.AppConfig',
     'edc_list_data.apps.AppConfig',
     'edc_identifier.apps.AppConfig',
+    'edc_timepoint.apps.AppConfig',
     'edc_action_item.apps.AppConfig',
     'edc_prn.apps.AppConfig',
     'ambition_rando.apps.AppConfig',
