@@ -3,6 +3,7 @@ from edc_action_item import action_fieldset
 from edc_model_admin import audit_fieldset_tuple
 
 from ..admin_site import ambition_prn_admin
+from ..choices import REASON_STUDY_TERMINATED
 from ..forms import StudyTerminationConclusionForm
 from ..models import StudyTerminationConclusion
 from .modeladmin_mixins import ModelAdminMixin
@@ -21,7 +22,7 @@ class StudyTerminationConclusionAdmin(ModelAdminMixin, admin.ModelAdmin):
         [None, {
             'fields': (
                 'subject_identifier',
-                'offstudy_datetime',
+                'report_datetime',
                 'last_study_fu_date',
                 'discharged_after_initial_admission',
                 'initial_discharge_date',
@@ -60,11 +61,11 @@ class StudyTerminationConclusionAdmin(ModelAdminMixin, admin.ModelAdmin):
         'second_line_regimen': admin.VERTICAL,
         'first_line_choice': admin.VERTICAL}
 
-    list_display = ('subject_identifier', 'dashboard', 'report_datetime',
-                    'offstudy_datetime', 'last_study_fu_date',
+    list_display = ('subject_identifier', 'dashboard',
+                    'report_datetime', 'last_study_fu_date',
                     'tracking_identifier', 'action_identifier')
 
-    list_filter = ('offstudy_datetime', 'last_study_fu_date')
+    list_filter = ('report_datetime', 'last_study_fu_date')
 
     search_fields = ('tracking_identifier',
                      'subject_identifier', 'action_identifier')
