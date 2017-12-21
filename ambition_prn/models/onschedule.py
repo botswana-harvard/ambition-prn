@@ -16,6 +16,6 @@ class OnSchedule(OnScheduleModelMixin, CreateAppointmentsMixin,
 
     history = HistoricalRecords()
 
-    class Meta(OnScheduleModelMixin.Meta):
+    class Meta(OnScheduleModelMixin.Meta, CreateAppointmentsMixin.Meta):
         consent_model = 'ambition_subject.subjectconsent'
         visit_schedule_name = 'visit_schedule.schedule'
