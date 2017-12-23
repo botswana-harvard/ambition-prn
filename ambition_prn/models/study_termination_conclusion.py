@@ -6,20 +6,19 @@ from edc_base.model_mixins import BaseUuidModel
 from edc_base.model_validators import date_not_future, datetime_not_future
 from edc_base.utils import get_utcnow
 from edc_constants.choices import YES_NO, YES_NO_NA, NOT_APPLICABLE
-from edc_identifier.managers import TrackingIdentifierManager
 from edc_identifier.model_mixins import TrackingIdentifierModelMixin
-from edc_identifier.model_mixins import UniqueSubjectIdentifierFieldMixin
+from edc_visit_schedule.model_mixins import OffScheduleModelMixin, OffScheduleModelManager
 
 from ..action_items import StudyTerminationConclusionAction
 from ..choices import FIRST_ARV_REGIMEN, FIRST_LINE_REGIMEN, SECOND_ARV_REGIMEN
 from ..choices import REASON_STUDY_TERMINATED, YES_NO_ALREADY
 
 
-class StudyTerminationConclusion(UniqueSubjectIdentifierFieldMixin,
-                                 ActionItemModelMixin, TrackingIdentifierModelMixin,
-                                 BaseUuidModel):
+class StudyTerminationConclusion(OffScheduleModelMixin, ActionItemModelMixin,
+                                 TrackingIdentifierModelMixin, BaseUuidModel):
 
     action_cls = StudyTerminationConclusionAction
+
     tracking_identifier_prefix = 'ST'
 
     report_datetime = models.DateTimeField(
@@ -118,8 +117,7 @@ class StudyTerminationConclusion(UniqueSubjectIdentifierFieldMixin,
         verbose_name='If included in error, narrative:',
         max_length=300,
         blank=True,
-        null=True
-    )
+        null=True)
 
     rifampicin_started = models.CharField(
         verbose_name='Rifampicin started since week 4?',
@@ -161,17 +159,15 @@ class StudyTerminationConclusion(UniqueSubjectIdentifierFieldMixin,
         blank=True,
         null=True)
 
-    objects = TrackingIdentifierManager()
+    objects = OffScheduleModelManager()
 
     history = HistoricalRecords()
 
     def save(self, *args, **kwargs):
         if not self.last_study_fu_date:
             self.last_study_fu_date = self.report_datetime.date()
+        self.offschedule_datetime = self.report_datetime
         super().save(*args, **kwargs)
-
-    def natural_key(self):
-        return (self.tracking_identifier, )
 
     class Meta:
         verbose_name = 'Study Termination/Conclusion'

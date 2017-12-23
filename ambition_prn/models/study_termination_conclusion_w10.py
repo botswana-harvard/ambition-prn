@@ -4,19 +4,17 @@ from edc_base.model_managers import HistoricalRecords
 from edc_base.model_mixins import BaseUuidModel
 from edc_base.model_validators import date_not_future
 from edc_base.utils import get_utcnow
-from edc_identifier.managers import TrackingIdentifierManager
 from edc_identifier.model_mixins import TrackingIdentifierModelMixin
-from edc_offstudy.model_mixins import OffstudyModelMixin
+from edc_visit_schedule.model_mixins import OffScheduleModelMixin, OffScheduleModelManager
 
 from ..action_items import StudyTerminationConclusionW10Action
 from ..choices import REASON_STUDY_TERMINATED
 
 
-class StudyTerminationConclusionW10(ActionItemModelMixin, TrackingIdentifierModelMixin,
-                                    OffstudyModelMixin, BaseUuidModel):
+class StudyTerminationConclusionW10(OffScheduleModelMixin, ActionItemModelMixin,
+                                    TrackingIdentifierModelMixin, BaseUuidModel):
 
     action_cls = StudyTerminationConclusionW10Action
-    offstudy_visit_model_app_label = 'ambition_subject'
     tracking_identifier_prefix = 'ST'
 
     report_datetime = models.DateTimeField(
@@ -48,19 +46,14 @@ class StudyTerminationConclusionW10(ActionItemModelMixin, TrackingIdentifierMode
         blank=True,
         null=True)
 
-    objects = TrackingIdentifierManager()
+    objects = OffScheduleModelManager()
 
     history = HistoricalRecords()
 
     def save(self, *args, **kwargs):
-        self.offstudy_reason = self.termination_reason
+        self.offschedule_datetime = self.report_datetime
         super().save(*args, **kwargs)
 
-    def natural_key(self):
-        return (self.tracking_identifier, )
-
-    class Meta(OffstudyModelMixin.Meta):
-        visit_schedule_name = 'visit_schedule_w10.schedule'
-        consent_model = 'ambition_subject.subjectconsent'
+    class Meta:
         verbose_name = 'W10 Study Termination/Conclusion'
         verbose_name_plural = 'W10 Study Terminations/Conclusions'
