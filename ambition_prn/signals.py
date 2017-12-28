@@ -4,7 +4,7 @@ from edc_constants.constants import YES, NO
 from edc_visit_schedule.site_visit_schedules import site_visit_schedules
 from edc_visit_schedule.subject_schedule import NotOnScheduleError
 
-from .study_termination_conclusion import StudyTerminationConclusion
+from .models import StudyTerminationConclusion
 
 
 @receiver(post_save, weak=False, sender=StudyTerminationConclusion,

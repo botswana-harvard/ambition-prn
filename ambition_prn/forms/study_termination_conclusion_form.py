@@ -1,11 +1,11 @@
 from django import forms
-from edc_offstudy.modelform_mixins import OffstudyModelFormMixin
+from edc_form_validators import FormValidatorMixin
 
-from ..models import StudyTerminationConclusion
 from ..form_validators import StudyTerminationConclusionFormValidator
+from ..models import StudyTerminationConclusion
 
 
-class StudyTerminationConclusionForm(OffstudyModelFormMixin, forms.ModelForm):
+class StudyTerminationConclusionForm(FormValidatorMixin, forms.ModelForm):
 
     form_validator_cls = StudyTerminationConclusionFormValidator
 
@@ -13,5 +13,5 @@ class StudyTerminationConclusionForm(OffstudyModelFormMixin, forms.ModelForm):
         model = StudyTerminationConclusion
         fields = '__all__'
         labels = {
-            'offstudy_datetime': 'Date patient terminated on study:',
+            'offschedule_datetime': 'Date patient terminated on study:',
         }

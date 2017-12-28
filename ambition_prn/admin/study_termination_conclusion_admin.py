@@ -3,7 +3,6 @@ from edc_action_item import action_fieldset
 from edc_model_admin import audit_fieldset_tuple
 
 from ..admin_site import ambition_prn_admin
-from ..choices import REASON_STUDY_TERMINATED
 from ..forms import StudyTerminationConclusionForm
 from ..models import StudyTerminationConclusion
 from .modeladmin_mixins import ModelAdminMixin
