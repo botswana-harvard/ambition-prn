@@ -1,19 +1,20 @@
+from django.contrib.sites.managers import CurrentSiteManager
 from django.db import models
 from edc_action_item.model_mixins import ActionItemModelMixin
 from edc_base.model_managers import HistoricalRecords
-from edc_base.model_mixins import BaseUuidModel
+from edc_base.model_mixins import BaseUuidModel, SiteModelMixin
 from edc_base.model_validators import date_not_future
 from edc_base.utils import get_utcnow
 from edc_constants.choices import YES_NO
+from edc_identifier.managers import TrackingIdentifierManager
 from edc_identifier.model_mixins import NonUniqueSubjectIdentifierFieldMixin
 from edc_identifier.model_mixins import TrackingIdentifierModelMixin
-from edc_identifier.managers import TrackingIdentifierManager
 
 from ..action_items import ProtocolDeviationViolationAction
 from ..choices import PROTOCOL_VIOLATION, ACTION_REQUIRED, DEVIATION_VIOLATION
 
 
-class ProtocolDeviationViolation(NonUniqueSubjectIdentifierFieldMixin,
+class ProtocolDeviationViolation(NonUniqueSubjectIdentifierFieldMixin, SiteModelMixin,
                                  ActionItemModelMixin, TrackingIdentifierModelMixin,
                                  BaseUuidModel):
 
@@ -28,8 +29,7 @@ class ProtocolDeviationViolation(NonUniqueSubjectIdentifierFieldMixin,
     deviation_or_violation = models.CharField(
         verbose_name='Is this a protocol deviation or violation?',
         max_length=10,
-        choices=DEVIATION_VIOLATION
-    )
+        choices=DEVIATION_VIOLATION)
 
     participant_safety_impact = models.CharField(
         verbose_name='Could this occurrence have an impact on safety of the '
@@ -115,6 +115,8 @@ class ProtocolDeviationViolation(NonUniqueSubjectIdentifierFieldMixin,
     objects = TrackingIdentifierManager()
 
     history = HistoricalRecords()
+
+    on_site = CurrentSiteManager()
 
     def natural_key(self):
         return (self.tracking_identifier, )

@@ -1,3 +1,4 @@
+from django.contrib.sites.managers import CurrentSiteManager
 from django.db import models
 from edc_action_item.model_mixins import ActionItemModelMixin
 from edc_base.model_managers import HistoricalRecords
@@ -49,6 +50,8 @@ class StudyTerminationConclusionW10(OffScheduleModelMixin, ActionItemModelMixin,
     objects = OffScheduleModelManager()
 
     history = HistoricalRecords()
+
+    on_site = CurrentSiteManager()
 
     def save(self, *args, **kwargs):
         self.offschedule_datetime = self.report_datetime

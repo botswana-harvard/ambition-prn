@@ -1,4 +1,5 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.sites.managers import CurrentSiteManager
 from django.db import models
 from edc_base.model_managers import HistoricalRecords
 from edc_base.model_mixins import BaseUuidModel
@@ -6,13 +7,19 @@ from edc_base.model_validators import datetime_not_future
 from edc_base.utils import get_utcnow
 from edc_constants.choices import YES_NO
 from edc_identifier.model_mixins import UniqueSubjectIdentifierFieldMixin
-from edc_identifier.models import SubjectIdentifierManager
 from edc_protocol.validators import datetime_not_before_study_start
 
 from ..choices import CAUSE_OF_DEATH, TB_SITE_DEATH
+from edc_base.model_mixins.site_model_mixin import SiteModelMixin
 
 
-class DeathReport(UniqueSubjectIdentifierFieldMixin, BaseUuidModel):
+class DeathReportManager(models.Manager):
+
+    def get_by_natural_key(self, subject_identifier):
+        return self.get(subject_identifier=subject_identifier)
+
+
+class DeathReport(UniqueSubjectIdentifierFieldMixin, SiteModelMixin, BaseUuidModel):
 
     report_datetime = models.DateTimeField(
         verbose_name="Report Date",
@@ -59,9 +66,11 @@ class DeathReport(UniqueSubjectIdentifierFieldMixin, BaseUuidModel):
     death_narrative = models.TextField(
         verbose_name='Narrative')
 
-    objects = SubjectIdentifierManager()
+    objects = DeathReportManager()
 
     history = HistoricalRecords()
+
+    on_site = CurrentSiteManager()
 
     def natural_key(self):
         return (self.subject_identifier, )
