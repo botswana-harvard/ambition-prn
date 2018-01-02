@@ -1,6 +1,8 @@
 from django.db import models
 from edc_base.model_managers import HistoricalRecords
 from edc_base.model_mixins import BaseUuidModel
+from edc_base.sites.site_model_mixin import SiteModelMixin
+
 
 from .base_death_report_tmg import BaseDeathReportTmg
 
@@ -11,7 +13,7 @@ class DeathReportTmgManager(models.Manager):
         return self.get(death_report__subject_identifier=subject_identifier)
 
 
-class DeathReportTmgOne(BaseDeathReportTmg, BaseUuidModel):
+class DeathReportTmgOne(BaseDeathReportTmg, SiteModelMixin, BaseUuidModel):
 
     objects = DeathReportTmgManager()
 
@@ -21,7 +23,7 @@ class DeathReportTmgOne(BaseDeathReportTmg, BaseUuidModel):
         verbose_name_plural = 'Death report TMG 1'
 
 
-class DeathReportTmgTwo(BaseDeathReportTmg, BaseUuidModel):
+class DeathReportTmgTwo(BaseDeathReportTmg, SiteModelMixin, BaseUuidModel):
 
     objects = DeathReportTmgManager()
 
