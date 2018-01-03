@@ -83,6 +83,18 @@ REASON_STUDY_TERMINATED = (
     ('included_in_error', 'Included in error'),
 )
 
+REASON_STUDY_TERMINATED_W10 = (
+    ('16_weeks_completed_follow_up',
+     'Patient completed 16 weeks of follow-up'),
+    ('patient_lost_to_follow_up', 'Patient lost to follow-up'),
+    (DEAD, 'Reported/known to have died'),
+    (CONSENT_WITHDRAWAL, 'Withdrawal of Subject Consent for '
+     'participation'),
+    ('care_transferred_to_another_institution',
+     'Care transferred to another institution'),
+    ('included_in_error', 'Included in error'),
+)
+
 SECOND_ARV_REGIMEN = (
     (NOT_APPLICABLE, 'Not applicable'),
     (TDF_3TC_FTC_with_ATZ_r_or_Lopinavir_r,

@@ -28,6 +28,8 @@ class StudyTerminationConclusionW10Admin(ModelAdminMixin, admin.ModelAdmin):
         audit_fieldset_tuple
     )
 
+    radio_fields = {'termination_reason': admin.VERTICAL}
+
     list_display = ('subject_identifier', 'dashboard',
                     'offschedule_datetime', 'last_study_fu_date',
                     'tracking_identifier', 'action_identifier')

@@ -9,7 +9,7 @@ from edc_identifier.model_mixins import TrackingIdentifierModelMixin
 from edc_visit_schedule.model_mixins import OffScheduleModelMixin
 
 from ..action_items import StudyTerminationConclusionW10Action
-from ..choices import REASON_STUDY_TERMINATED
+from ..choices import REASON_STUDY_TERMINATED_W10
 
 
 class StudyTerminationConclusionW10(OffScheduleModelMixin, ActionItemModelMixin,
@@ -27,7 +27,7 @@ class StudyTerminationConclusionW10(OffScheduleModelMixin, ActionItemModelMixin,
     termination_reason = models.CharField(
         verbose_name='Reason for study termination',
         max_length=75,
-        choices=REASON_STUDY_TERMINATED,
+        choices=REASON_STUDY_TERMINATED_W10,
         help_text=(
             'If included in error, be sure to fill in protocol deviation form.'))
 
