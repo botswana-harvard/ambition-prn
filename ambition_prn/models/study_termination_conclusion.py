@@ -164,7 +164,7 @@ class StudyTerminationConclusion(OffScheduleModelMixin, ActionItemModelMixin,
 
     def save(self, *args, **kwargs):
         if not self.last_study_fu_date:
-            self.last_study_fu_date = self.report_datetime.date()
+            self.last_study_fu_date = self.offschedule_datetime.date()
         super().save(*args, **kwargs)
 
     class Meta:
