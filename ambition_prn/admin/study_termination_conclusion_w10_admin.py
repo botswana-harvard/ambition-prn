@@ -21,7 +21,7 @@ class StudyTerminationConclusionW10Admin(ModelAdminMixin, admin.ModelAdmin):
         [None, {
             'fields': (
                 'subject_identifier',
-                'report_datetime',
+                'offschedule_datetime',
                 'last_study_fu_date',
                 'termination_reason')}],
         action_fieldset,
@@ -29,10 +29,10 @@ class StudyTerminationConclusionW10Admin(ModelAdminMixin, admin.ModelAdmin):
     )
 
     list_display = ('subject_identifier', 'dashboard',
-                    'report_datetime', 'last_study_fu_date',
+                    'offschedule_datetime', 'last_study_fu_date',
                     'tracking_identifier', 'action_identifier')
 
-    list_filter = ('report_datetime', 'last_study_fu_date')
+    list_filter = ('offschedule_datetime', 'last_study_fu_date')
 
     search_fields = ('tracking_identifier',
                      'subject_identifier', 'action_identifier')

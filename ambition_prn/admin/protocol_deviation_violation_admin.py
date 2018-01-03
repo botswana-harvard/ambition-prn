@@ -66,5 +66,5 @@ class ProtocolDeviationViolationAdmin(ModelAdminMixin, admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         fields = super().get_readonly_fields(request, obj)
-        fields = ('tracking_identifier', ) + fields
+        fields = ('tracking_identifier', 'action_identifier') + fields
         return fields
