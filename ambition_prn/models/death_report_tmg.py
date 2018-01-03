@@ -1,3 +1,4 @@
+from django.contrib.sites.managers import CurrentSiteManager
 from django.db import models
 from edc_base.model_managers import HistoricalRecords
 from edc_base.model_mixins import BaseUuidModel
@@ -19,6 +20,8 @@ class DeathReportTmgOne(BaseDeathReportTmg, SiteModelMixin, BaseUuidModel):
 
     history = HistoricalRecords()
 
+    on_site = CurrentSiteManager()
+
     class Meta:
         verbose_name_plural = 'Death report TMG 1'
 
@@ -28,6 +31,8 @@ class DeathReportTmgTwo(BaseDeathReportTmg, SiteModelMixin, BaseUuidModel):
     objects = DeathReportTmgManager()
 
     history = HistoricalRecords()
+
+    on_site = CurrentSiteManager()
 
     class Meta:
         verbose_name_plural = 'Death report TMG 2'

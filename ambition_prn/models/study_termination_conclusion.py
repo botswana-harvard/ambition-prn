@@ -8,7 +8,8 @@ from edc_base.model_validators import date_not_future, datetime_not_future
 from edc_base.utils import get_utcnow
 from edc_constants.choices import YES_NO, YES_NO_NA, NOT_APPLICABLE
 from edc_identifier.model_mixins import TrackingIdentifierModelMixin
-from edc_visit_schedule.model_mixins import OffScheduleModelMixin, OffScheduleModelManager
+from edc_identifier.managers import SubjectIdentifierManager
+from edc_visit_schedule.model_mixins import OffScheduleModelMixin
 
 from ..action_items import StudyTerminationConclusionAction
 from ..choices import FIRST_ARV_REGIMEN, FIRST_LINE_REGIMEN, SECOND_ARV_REGIMEN
@@ -21,11 +22,6 @@ class StudyTerminationConclusion(OffScheduleModelMixin, ActionItemModelMixin,
     action_cls = StudyTerminationConclusionAction
 
     tracking_identifier_prefix = 'ST'
-
-    report_datetime = models.DateTimeField(
-        verbose_name="Report Date and Time",
-        validators=[datetime_not_future],
-        default=get_utcnow)
 
     last_study_fu_date = models.DateField(
         verbose_name='Date of last research follow up (if different):',
@@ -160,7 +156,7 @@ class StudyTerminationConclusion(OffScheduleModelMixin, ActionItemModelMixin,
         blank=True,
         null=True)
 
-    objects = OffScheduleModelManager()
+    objects = SubjectIdentifierManager()
 
     history = HistoricalRecords()
 
@@ -169,7 +165,6 @@ class StudyTerminationConclusion(OffScheduleModelMixin, ActionItemModelMixin,
     def save(self, *args, **kwargs):
         if not self.last_study_fu_date:
             self.last_study_fu_date = self.report_datetime.date()
-        self.offschedule_datetime = self.report_datetime
         super().save(*args, **kwargs)
 
     class Meta:

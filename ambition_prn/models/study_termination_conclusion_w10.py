@@ -4,9 +4,9 @@ from edc_action_item.model_mixins import ActionItemModelMixin
 from edc_base.model_managers import HistoricalRecords
 from edc_base.model_mixins import BaseUuidModel
 from edc_base.model_validators import date_not_future
-from edc_base.utils import get_utcnow
+from edc_identifier.managers import SubjectIdentifierManager
 from edc_identifier.model_mixins import TrackingIdentifierModelMixin
-from edc_visit_schedule.model_mixins import OffScheduleModelMixin, OffScheduleModelManager
+from edc_visit_schedule.model_mixins import OffScheduleModelMixin
 
 from ..action_items import StudyTerminationConclusionW10Action
 from ..choices import REASON_STUDY_TERMINATED
@@ -17,10 +17,6 @@ class StudyTerminationConclusionW10(OffScheduleModelMixin, ActionItemModelMixin,
 
     action_cls = StudyTerminationConclusionW10Action
     tracking_identifier_prefix = 'ST'
-
-    report_datetime = models.DateTimeField(
-        verbose_name="Report Date and Time",
-        default=get_utcnow)
 
     last_study_fu_date = models.DateField(
         verbose_name='Date of last research follow up (if different):',
@@ -47,15 +43,11 @@ class StudyTerminationConclusionW10(OffScheduleModelMixin, ActionItemModelMixin,
         blank=True,
         null=True)
 
-    objects = OffScheduleModelManager()
+    objects = SubjectIdentifierManager()
 
     history = HistoricalRecords()
 
     on_site = CurrentSiteManager()
-
-    def save(self, *args, **kwargs):
-        self.offschedule_datetime = self.report_datetime
-        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'W10 Study Termination/Conclusion'
