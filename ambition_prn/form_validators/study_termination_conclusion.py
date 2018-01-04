@@ -6,6 +6,8 @@ from edc_form_validators import FormValidator
 from edc_constants.constants import DEAD
 
 from ..constants import CONSENT_WITHDRAWAL
+from django.conf import settings
+from edc_base.utils import convert_php_dateformat
 
 
 class StudyTerminationConclusionFormValidator(FormValidator):
@@ -23,14 +25,28 @@ class StudyTerminationConclusionFormValidator(FormValidator):
 
     def clean(self):
 
-        if self.cleaned_data.get('termination_reason') == DEAD:
-            try:
-                self.death_report_model_cls.objects.get(
-                    subject_identifier=self.cleaned_data.get('subject_identifier'))
-            except ObjectDoesNotExist:
+        try:
+            death_report = self.death_report_model_cls.objects.get(
+                subject_identifier=self.cleaned_data.get('subject_identifier'))
+        except ObjectDoesNotExist:
+            if self.cleaned_data.get('termination_reason') == DEAD:
                 raise forms.ValidationError({
                     'termination_reason':
-                    'Patient is deceased, please complete death form first.'})
+                    'Patient is deceased, please complete death report form first.'})
+
+        if death_report and self.cleaned_data.get('death_date'):
+            try:
+                self.death_report_model_cls.objects.get(
+                    subject_identifier=self.cleaned_data.get(
+                        'subject_identifier'),
+                    death_datetime__date=self.cleaned_data.get('death_date'))
+            except ObjectDoesNotExist:
+                formatted_date = death_report.death_datetime.strftime(
+                    convert_php_dateformat(settings.SHORT_DATE_FORMAT))
+                raise forms.ValidationError({
+                    'death_date':
+                    'Date does not match Death Report. '
+                    f'Expected {formatted_date}.'})
 
         self.required_if(
             YES,

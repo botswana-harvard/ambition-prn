@@ -1,14 +1,15 @@
 import pytz
 
+from django import forms
 from arrow.arrow import Arrow
-from django.conf import settings
-from django.forms import forms
-from edc_base.utils import convert_php_dateformat
 from edc_constants.constants import OTHER
-from edc_form_validators import FormValidator, NOT_REQUIRED_ERROR
+from edc_form_validators import FormValidator
+from django.conf import settings
+from edc_base.utils import convert_php_dateformat
 from edc_registration.models import RegisteredSubject
 
 from ..constants import TUBERCULOSIS
+from edc_form_validators.base_form_validator import INVALID_ERROR
 
 
 class DeathReportFormValidator(FormValidator):
@@ -30,7 +31,7 @@ class DeathReportFormValidator(FormValidator):
     def validate_study_day(self):
         # note: study-day is 1-based
         study_day = self.cleaned_data.get('study_day')
-        if study_day:
+        if study_day is not None:
             death_datetime = self.cleaned_data.get('death_datetime')
             if death_datetime:
                 randomization_datetime = RegisteredSubject.objects.get(
@@ -43,8 +44,11 @@ class DeathReportFormValidator(FormValidator):
                     formatted_date = Arrow.fromdatetime(
                         randomization_datetime).to(tz).strftime(
                             convert_php_dateformat(settings.DATETIME_FORMAT))
+
                     message = {
-                        'study_day': (f'Expected study day "{days_on_study + 1}". '
-                                      f'Subject was randomization on {formatted_date}')}
-                    raise forms.ValidationError(
-                        message, code=NOT_REQUIRED_ERROR)
+                        'study_day': (
+                            f'Invalid. Expected {days_on_study + 1}. '
+                            f'Subject was randomization on {formatted_date}')}
+                    self._errors.update(message)
+                    self._error_codes.append(INVALID_ERROR)
+                    raise forms.ValidationError(message, code=INVALID_ERROR)

@@ -36,3 +36,7 @@ class DeathReportAdmin(ModelAdminMixin, admin.ModelAdmin):
                 'death_narrative',)}),
         audit_fieldset_tuple
     )
+
+    list_display = (
+        'subject_identifier', 'dashboard', 'study_day', 'death_datetime')
+    list_filter = ('death_datetime', )

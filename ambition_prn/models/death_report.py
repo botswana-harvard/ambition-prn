@@ -38,7 +38,7 @@ class DeathReport(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
         verbose_name='Date and Time of Death')
 
     study_day = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(80)],
+        validators=[MinValueValidator(1), ],
         verbose_name='Study day')
 
     death_as_inpatient = models.CharField(
