@@ -1,25 +1,28 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.sites.managers import CurrentSiteManager
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from edc_action_item.model_mixins import ActionItemModelMixin
 from edc_base.model_managers import HistoricalRecords
 from edc_base.model_mixins import BaseUuidModel
-from edc_base.sites.site_model_mixin import SiteModelMixin
 from edc_base.model_validators import datetime_not_future
+from edc_base.sites.site_model_mixin import SiteModelMixin
 from edc_base.utils import get_utcnow
 from edc_constants.choices import YES_NO
+from edc_identifier.managers import SubjectIdentifierManager
+from edc_identifier.model_mixins import TrackingIdentifierModelMixin
 from edc_identifier.model_mixins import UniqueSubjectIdentifierFieldMixin
 from edc_protocol.validators import datetime_not_before_study_start
 
+from ..action_items import DeathReportAction
 from ..choices import CAUSE_OF_DEATH, TB_SITE_DEATH
 
 
-class DeathReportManager(models.Manager):
+class DeathReport(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
+                  ActionItemModelMixin, TrackingIdentifierModelMixin,
+                  BaseUuidModel):
 
-    def get_by_natural_key(self, subject_identifier):
-        return self.get(subject_identifier=subject_identifier)
-
-
-class DeathReport(UniqueSubjectIdentifierFieldMixin, SiteModelMixin, BaseUuidModel):
+    action_cls = DeathReportAction
+    tracking_identifier_prefix = 'DR'
 
     report_datetime = models.DateTimeField(
         verbose_name="Report Date",
@@ -66,7 +69,7 @@ class DeathReport(UniqueSubjectIdentifierFieldMixin, SiteModelMixin, BaseUuidMod
     death_narrative = models.TextField(
         verbose_name='Narrative')
 
-    objects = DeathReportManager()
+    objects = SubjectIdentifierManager()
 
     history = HistoricalRecords()
 

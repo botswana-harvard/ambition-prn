@@ -4,6 +4,7 @@ from django.test import TestCase, tag
 from edc_constants.constants import YES, NO, OTHER, NOT_APPLICABLE, DEAD
 from edc_base.utils import get_utcnow
 from edc_list_data import site_list_data
+from edc_registration.models import RegisteredSubject
 
 from ..constants import CONSENT_WITHDRAWAL
 from ..form_validators import StudyTerminationConclusionFormValidator
@@ -28,6 +29,8 @@ class TestStudyTerminationConclusionFormValidator(TestCase):
             'ambition_prn.patienthistory')
 
         self.subject_identifier = '12345'
+        RegisteredSubject.objects.create(
+            subject_identifier=self.subject_identifier)
         subject_visit = SubjectVisit.objects.create(
             subject_identifier=self.subject_identifier)
 

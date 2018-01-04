@@ -1,9 +1,21 @@
 from edc_action_item import Action, HIGH_PRIORITY, site_action_items
 
 
+DEATH_REPORT_ACTION = 'submit-death-report'
 PROTOCOL_DEVIATION_VIOLATION_ACTION = 'submit-protocol-deviation-violation'
 STUDY_TERMINATION_CONCLUSION_ACTION = 'submit-study-termination-conclusion'
 STUDY_TERMINATION_CONCLUSION_ACTION_W10 = 'submit-w10-study-termination-conclusion'
+
+
+class DeathReportAction(Action):
+    name = DEATH_REPORT_ACTION
+    display_name = 'Submit Death Report'
+    model = 'ambition_prn.deathreport'
+    show_link_to_changelist = True
+    show_link_to_add = True
+    admin_site_name = 'ambition_prn_admin'
+    priority = HIGH_PRIORITY
+    singleton = True
 
 
 class ProtocolDeviationViolationAction(Action):
@@ -33,6 +45,7 @@ class StudyTerminationConclusionW10Action(Action):
     priority = HIGH_PRIORITY
 
 
+site_action_items.register(DeathReportAction)
 site_action_items.register(ProtocolDeviationViolationAction)
 site_action_items.register(StudyTerminationConclusionAction)
 site_action_items.register(StudyTerminationConclusionW10Action)

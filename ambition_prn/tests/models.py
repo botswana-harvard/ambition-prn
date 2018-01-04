@@ -3,6 +3,13 @@ from edc_base.model_mixins.base_uuid_model import BaseUuidModel
 from django.db.models.deletion import PROTECT
 
 
+class SubjectConsent(models.Model):
+
+    screening_identifier = models.CharField(max_length=50)
+
+    subject_identifier = models.CharField(max_length=50)
+
+
 class SubjectVisit(BaseUuidModel):
 
     subject_identifier = models.CharField(

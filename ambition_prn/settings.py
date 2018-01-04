@@ -18,8 +18,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 APP_NAME = 'ambition_prn'
 ETC_DIR = os.path.join(BASE_DIR, 'etc')
-
 SITE_ID = 40
+RANDOMIZATION_LIST_PATH = os.path.join(
+    BASE_DIR, APP_NAME, 'tests', 'test_randomization_list.csv')
 
 # AUTO_CREATE_KEYS = True
 
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     'edc_action_item.apps.AppConfig',
     'edc_prn.apps.AppConfig',
     'ambition_rando.apps.AppConfig',
+    'ambition_prn.apps.EdcFacilityAppConfig',
     'ambition_prn.apps.AppConfig',
 ]
 
@@ -139,6 +141,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+DASHBOARD_URL_NAMES = {
+    'subject_models_url': 'subject_models_url',
+    'subject_listboard_url': 'ambition_dashboard:subject_listboard_url',
+    'screening_listboard_url': 'ambition_dashboard:screening_listboard_url',
+    'subject_dashboard_url': 'ambition_dashboard:subject_dashboard_url',
+}
+
+COUNTRY = 'botswana'
+HOLIDAY_FILE = os.path.join(BASE_DIR, APP_NAME, 'tests', 'holidays.csv')
+
 
 if 'test' in sys.argv:
 

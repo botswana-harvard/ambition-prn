@@ -11,16 +11,10 @@ deathreport = Recipe(
     DeathReport,
     study_day=1,
     death_as_inpatient=YES,
-    cause_of_death_study_doctor_opinion='art_toxicity',
-    cause_other_study_doctor_opinion='None',
-    cause_tb_study_doctor_opinion=None,
-    cause_of_death_tmg1_opinion='art_toxicity',
-    cause_other_tmg1_opinion='None',
-    cause_tb_tmg1_opinion=None,
-    cause_of_death_tmg2_opinion='art_toxicity',
-    cause_other_tmg2_opinion='None',
-    cause_tb_tmg2_opinion=None,
-    narrative_summary=(
+    cause_of_death='art_toxicity',
+    cause_of_death_other=None,
+    tb_site='meningitis',
+    death_narrative=(
         'adverse event resulted in death due to cryptococcal meningitis'))
 
 studyterminationconclusion = Recipe(StudyTerminationConclusion)
