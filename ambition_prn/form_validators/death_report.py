@@ -1,22 +1,18 @@
-import pytz
-
-from django import forms
-from arrow.arrow import Arrow
 from edc_constants.constants import OTHER
 from edc_form_validators import FormValidator
-from django.conf import settings
-from edc_base.utils import convert_php_dateformat
-from edc_registration.models import RegisteredSubject
 
 from ..constants import TUBERCULOSIS
-from edc_form_validators.base_form_validator import INVALID_ERROR
+from .study_day_form_validator_mixin import StudyDayFormValidatorMixin
 
 
-class DeathReportFormValidator(FormValidator):
+class DeathReportFormValidator(StudyDayFormValidatorMixin, FormValidator):
 
     def clean(self):
 
-        self.validate_study_day()
+        self.validate_study_day_with_datetime(
+            study_day=self.cleaned_data.get('study_day'),
+            compare_datetime=self.cleaned_data.get('death_datetime'),
+            study_day_field='study_day')
 
         self.validate_other_specify(
             field='cause_of_death',
@@ -27,28 +23,3 @@ class DeathReportFormValidator(FormValidator):
             TUBERCULOSIS,
             field='cause_of_death',
             field_required='tb_site')
-
-    def validate_study_day(self):
-        # note: study-day is 1-based
-        study_day = self.cleaned_data.get('study_day')
-        if study_day is not None:
-            death_datetime = self.cleaned_data.get('death_datetime')
-            if death_datetime:
-                randomization_datetime = RegisteredSubject.objects.get(
-                    subject_identifier=self.cleaned_data.get(
-                        'subject_identifier')).randomization_datetime
-                days_on_study = (
-                    death_datetime.date() - randomization_datetime.date()).days
-                if study_day - 1 != days_on_study:
-                    tz = pytz.timezone(settings.TIME_ZONE)
-                    formatted_date = Arrow.fromdatetime(
-                        randomization_datetime).to(tz).strftime(
-                            convert_php_dateformat(settings.DATETIME_FORMAT))
-
-                    message = {
-                        'study_day': (
-                            f'Invalid. Expected {days_on_study + 1}. '
-                            f'Subject was randomization on {formatted_date}')}
-                    self._errors.update(message)
-                    self._error_codes.append(INVALID_ERROR)
-                    raise forms.ValidationError(message, code=INVALID_ERROR)

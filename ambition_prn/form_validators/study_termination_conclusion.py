@@ -33,20 +33,20 @@ class StudyTerminationConclusionFormValidator(FormValidator):
                 raise forms.ValidationError({
                     'termination_reason':
                     'Patient is deceased, please complete death report form first.'})
-
-        if death_report and self.cleaned_data.get('death_date'):
-            try:
-                self.death_report_model_cls.objects.get(
-                    subject_identifier=self.cleaned_data.get(
-                        'subject_identifier'),
-                    death_datetime__date=self.cleaned_data.get('death_date'))
-            except ObjectDoesNotExist:
-                formatted_date = death_report.death_datetime.strftime(
-                    convert_php_dateformat(settings.SHORT_DATE_FORMAT))
-                raise forms.ValidationError({
-                    'death_date':
-                    'Date does not match Death Report. '
-                    f'Expected {formatted_date}.'})
+        else:
+            if self.cleaned_data.get('death_date'):
+                try:
+                    self.death_report_model_cls.objects.get(
+                        subject_identifier=self.cleaned_data.get(
+                            'subject_identifier'),
+                        death_datetime__date=self.cleaned_data.get('death_date'))
+                except ObjectDoesNotExist:
+                    formatted_date = death_report.death_datetime.strftime(
+                        convert_php_dateformat(settings.SHORT_DATE_FORMAT))
+                    raise forms.ValidationError({
+                        'death_date':
+                        'Date does not match Death Report. '
+                        f'Expected {formatted_date}.'})
 
         self.required_if(
             YES,
