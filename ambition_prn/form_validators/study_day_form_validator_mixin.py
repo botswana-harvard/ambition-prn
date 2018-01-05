@@ -10,7 +10,9 @@ from edc_form_validators.base_form_validator import INVALID_ERROR
 
 class StudyDayFormValidatorMixin:
 
-    def validate_study_day_with_datetime(self, study_day=None,
+    def validate_study_day_with_datetime(self,
+                                         subject_identifier=None,
+                                         study_day=None,
                                          compare_date=None,
                                          study_day_field=None):
         """Raises an exception if study day does not match
@@ -23,11 +25,15 @@ class StudyDayFormValidatorMixin:
                 compare_date = compare_date.date()
             except AttributeError:
                 pass
+            subject_identifier = subject_identifier or self.cleaned_data.get(
+                'subject_identifier')
+            if not subject_identifier:
+                raise ValueError(
+                    f'Subject identifier cannot be None. See {repr(self)}')
             registered_subject_model_cls = django_apps.get_model(
                 'edc_registration.registeredsubject')
             randomization_datetime = registered_subject_model_cls.objects.get(
-                subject_identifier=self.cleaned_data.get(
-                    'subject_identifier')).randomization_datetime
+                subject_identifier=subject_identifier).randomization_datetime
             days_on_study = (
                 compare_date - randomization_datetime.date()).days
             if study_day - 1 != days_on_study:

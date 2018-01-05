@@ -263,29 +263,6 @@ class TestStudyTerminationConclusionFormValidator(TestCase):
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn('second_line_regimen_other', form_validator._errors)
 
-    def test_date_arvs_started_or_switched_none_arvs_delay_reason(self):
-
-        cleaned_data = {
-            'subject_identifier': self.subject_identifier,
-            'first_line_regimen': NOT_APPLICABLE,
-            'arvs_delay_reason': None}
-        form_validator = StudyTerminationConclusionFormValidator(
-            cleaned_data=cleaned_data)
-        self.assertRaises(ValidationError, form_validator.validate)
-        self.assertIn('arvs_delay_reason', form_validator._errors)
-
-    def test_na_date_arvs_started_or_switched_with_arvs_delay_reason(self):
-        cleaned_data = {
-            'subject_identifier': self.subject_identifier,
-            'first_line_regimen': NOT_APPLICABLE,
-            'arvs_delay_reason': 'bahblah'}
-        form_validator = StudyTerminationConclusionFormValidator(
-            cleaned_data=cleaned_data)
-        try:
-            form_validator.validate()
-        except ValidationError as e:
-            self.fail(f'ValidationError unexpectedly raised. Got{e}')
-
     def test_consent_withdrawal_reason_invalid(self):
         cleaned_data = {'termination_reason': CONSENT_WITHDRAWAL,
                         'consent_withdrawal_reason': None}

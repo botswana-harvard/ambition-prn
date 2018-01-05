@@ -112,17 +112,3 @@ class StudyTerminationConclusionFormValidator(FormValidator):
             NOT_APPLICABLE,
             field='first_line_regimen',
             field_applicable='first_line_choice')
-
-        try:
-            patient_history = self.patient_history_model_cls.objects.get(
-                subject_visit__subject_identifier=self.cleaned_data.get(
-                    'subject_identifier'))
-        except ObjectDoesNotExist:
-            patient_history = None
-
-        self.required_if_true(
-            condition=(
-                patient_history
-                and (patient_history.first_arv_regimen == NOT_APPLICABLE
-                     and self.cleaned_data.get('first_line_regimen') == NOT_APPLICABLE)),
-            field_required='arvs_delay_reason')
