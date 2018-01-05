@@ -1,5 +1,5 @@
 from django.contrib.sites.managers import CurrentSiteManager
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator
 from django.db import models
 from edc_action_item.model_mixins import ActionItemModelMixin
 from edc_base.model_managers import HistoricalRecords
@@ -77,3 +77,6 @@ class DeathReport(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
 
     def natural_key(self):
         return (self.subject_identifier, )
+
+    class Meta:
+        verbose_name = 'Death Report'
