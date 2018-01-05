@@ -11,7 +11,7 @@ class DeathReportFormValidator(StudyDayFormValidatorMixin, FormValidator):
 
         self.validate_study_day_with_datetime(
             study_day=self.cleaned_data.get('study_day'),
-            compare_datetime=self.cleaned_data.get('death_datetime'),
+            compare_date=self.cleaned_data.get('death_datetime'),
             study_day_field='study_day')
 
         self.validate_other_specify(
