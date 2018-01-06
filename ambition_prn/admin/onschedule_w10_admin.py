@@ -12,7 +12,7 @@ class OnScheduleW10Admin(ModelAdminMixin, admin.ModelAdmin):
     fields = (
         'subject_identifier', 'onschedule_datetime')
 
-    list_display = ('subject_identifier', 'onschedule_datetime')
+    list_display = ('subject_identifier', 'dashboard', 'onschedule_datetime')
 
     list_filter = ('onschedule_datetime', )
 
