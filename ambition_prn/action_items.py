@@ -14,6 +14,7 @@ class ProtocolDeviationViolationAction(Action):
     display_name = 'Submit Protocol Deviation / Violation Report'
     model = 'ambition_prn.protocoldeviationviolation'
     show_link_to_changelist = True
+    show_link_to_add = True
     admin_site_name = 'ambition_prn_admin'
     priority = HIGH_PRIORITY
 
