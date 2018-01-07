@@ -1,6 +1,7 @@
 from django.apps import apps as django_apps
-from edc_action_item import Action, HIGH_PRIORITY, site_action_items
 from django.core.exceptions import ObjectDoesNotExist
+from edc_action_item import Action, HIGH_PRIORITY, site_action_items
+from edc_constants.constants import CLOSED
 
 
 DEATH_REPORT_ACTION = 'submit-death-report'
@@ -11,12 +12,15 @@ STUDY_TERMINATION_CONCLUSION_ACTION_W10 = 'submit-w10-study-termination-conclusi
 
 class ProtocolDeviationViolationAction(Action):
     name = PROTOCOL_DEVIATION_VIOLATION_ACTION
-    display_name = 'Submit Protocol Deviation / Violation Report'
+    display_name = 'Submit Protocol Deviation/Violation Report'
     model = 'ambition_prn.protocoldeviationviolation'
     show_link_to_changelist = True
     show_link_to_add = True
     admin_site_name = 'ambition_prn_admin'
     priority = HIGH_PRIORITY
+
+    def close_action_item_on_save(self):
+        return self.model_obj.report_status == CLOSED
 
 
 class StudyTerminationConclusionAction(Action):

@@ -18,21 +18,23 @@ class ProtocolDeviationViolationAdmin(ModelAdminMixin, admin.ModelAdmin):
             'fields': (
                 'subject_identifier',
                 'report_datetime',
+                'report_type',
             )}
          ),
-        ('Assessment to confirm violation', {
+        ('Assessment to confirm violation/deviation', {
             'fields': (
-                'deviation_or_violation',
-                'participant_safety_impact',
-                'participant_safety_impact_details',
+                'safety_impact',
+                'safety_impact_details',
                 'study_outcomes_impact',
                 'study_outcomes_impact_details')},
          ),
-        ('Details of violation', {
+        ('Details of protocol violation', {
+            'description': ('The following questions are only required if '
+                            'this is a protocol violation.'),
             'fields': (
-                'date_violation_datetime',
-                'protocol_violation_type',
-                'protocol_violation_type_other',
+                'violation_datetime',
+                'violation_type',
+                'violation_type_other',
                 'violation_description',
                 'violation_reason')}
          ),
@@ -43,23 +45,29 @@ class ProtocolDeviationViolationAdmin(ModelAdminMixin, admin.ModelAdmin):
                 'preventative_action_datetime',
                 'preventative_action',
                 'action_required',)}),
+        ('Report status', {
+            'fields': (
+                'report_status',
+                'report_closed_datetime')}),
         action_fieldset,
         audit_fieldset_tuple,
     )
 
     radio_fields = {
-        'deviation_or_violation': admin.VERTICAL,
-        'participant_safety_impact': admin.VERTICAL,
+        'action_required': admin.VERTICAL,
+        'report_status': admin.VERTICAL,
+        'report_type': admin.VERTICAL,
+        'safety_impact': admin.VERTICAL,
         'study_outcomes_impact': admin.VERTICAL,
-        'protocol_violation_type': admin.VERTICAL,
-        'action_required': admin.VERTICAL}
+        'violation_type': admin.VERTICAL,
+    }
 
     list_display = ('subject_identifier', 'dashboard',
-                    'report_datetime', 'action_required', 'deviation_or_violation',
-                    'tracking_identifier', 'action_identifier')
+                    'report_datetime', 'status', 'action_required', 'report_type',
+                    'tracking_identifier', 'action_identifier', 'user_created')
 
-    list_filter = ('action_required',
-                   'deviation_or_violation')
+    list_filter = ('action_required', 'report_status',
+                   'report_type')
 
     search_fields = ('tracking_identifier',
                      'subject_identifier', 'action_identifier')
@@ -67,4 +75,9 @@ class ProtocolDeviationViolationAdmin(ModelAdminMixin, admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         fields = super().get_readonly_fields(request, obj)
         fields = ('tracking_identifier', 'action_identifier') + fields
+        if obj:
+            fields = fields + ('subject_identifier', )
         return fields
+
+    def status(self, obj=None):
+        return obj.report_status.title()

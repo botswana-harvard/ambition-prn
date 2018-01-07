@@ -1,4 +1,5 @@
 from edc_constants.constants import UNKNOWN, OTHER, DEAD, YES, NO, NOT_APPLICABLE
+from edc_constants.constants import OPEN, CLOSED
 
 from .constants import AZT_3TC_with_ATZ_r_or_Lopinavir_r
 from .constants import AZT_3TC_with_EFV_NVP_or_DTG, TDF_3TC_FTC_with_ATZ_r_or_Lopinavir_r
@@ -30,8 +31,8 @@ CAUSE_OF_DEATH = (
 
 
 DEVIATION_VIOLATION = (
-    (DEVIATION, 'Deviation'),
-    (VIOLATION, 'Violation'),
+    (VIOLATION, 'Protocol violation'),
+    (DEVIATION, 'Protocol deviation'),
 )
 
 FIRST_ARV_REGIMEN = (
@@ -68,6 +69,7 @@ PROTOCOL_VIOLATION = (
     ('national_regulations_not_met', 'Standard WPD, ICH-GCP, local/national '
      'regulations not met'),
     (OTHER, 'Other'),
+    (NOT_APPLICABLE, 'Not applicable'),
 )
 
 REASON_STUDY_TERMINATED = (
@@ -94,6 +96,12 @@ REASON_STUDY_TERMINATED_W10 = (
      'Care transferred to another institution'),
     ('included_in_error', 'Included in error'),
 )
+
+REPORT_STATUS = (
+    (OPEN, 'Open. Some information is still pending.'),
+    (CLOSED, 'Closed. This report is complete'),
+)
+
 
 SECOND_ARV_REGIMEN = (
     (NOT_APPLICABLE, 'Not applicable'),
