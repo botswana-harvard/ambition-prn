@@ -8,12 +8,14 @@ from edc_model_admin import (
     ModelAdminReadOnlyMixin, ModelAdminInstitutionMixin,
     ModelAdminRedirectOnDeleteMixin)
 from edc_metadata import NextFormGetter
+from edc_subject_dashboard import ModelAdminSubjectDashboardMixin
 
 
 class ModelAdminMixin(ModelAdminNextUrlRedirectMixin, ModelAdminFormInstructionsMixin,
                       ModelAdminFormAutoNumberMixin, ModelAdminRevisionMixin,
                       ModelAdminAuditFieldsMixin, ModelAdminReadOnlyMixin,
-                      ModelAdminInstitutionMixin, ModelAdminRedirectOnDeleteMixin):
+                      ModelAdminInstitutionMixin, ModelAdminRedirectOnDeleteMixin,
+                      ModelAdminSubjectDashboardMixin):
 
     list_per_page = 10
     date_hierarchy = 'modified'
@@ -26,11 +28,3 @@ class ModelAdminMixin(ModelAdminNextUrlRedirectMixin, ModelAdminFormInstructions
 
     def post_url_on_delete_kwargs(self, request, obj):
         return dict(subject_identifier=obj.subject_identifier)
-
-    def dashboard(self, obj):
-        url = reverse(settings.DASHBOARD_URL_NAMES.get(self.subject_dashboard_url),
-                      kwargs=dict(subject_identifier=obj.subject_identifier))
-        return mark_safe(
-            f'<a data-toggle="tooltip" title="go to subject dashboard" '
-            f'href="{url}">{obj.subject_identifier}</a>')
-    dashboard.short_description = 'Dashboard'
