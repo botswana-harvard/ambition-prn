@@ -49,6 +49,7 @@ FIRST_LINE_REGIMEN = (
     ('EFV', 'EFV'),
     ('DTG', 'DTG'),
     ('NVP', 'NVP'),
+    (OTHER, 'Other'),
 )
 
 PROTOCOL_VIOLATION = (
