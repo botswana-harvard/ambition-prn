@@ -16,11 +16,11 @@ class DeathReportTmgManager(models.Manager):
 
 class DeathReportTmgOne(BaseDeathReportTmg, SiteModelMixin, BaseUuidModel):
 
+    on_site = CurrentSiteManager()
+
     objects = DeathReportTmgManager()
 
     history = HistoricalRecords()
-
-    on_site = CurrentSiteManager()
 
     class Meta:
         verbose_name_plural = 'Death report TMG 1'
@@ -28,11 +28,11 @@ class DeathReportTmgOne(BaseDeathReportTmg, SiteModelMixin, BaseUuidModel):
 
 class DeathReportTmgTwo(BaseDeathReportTmg, SiteModelMixin, BaseUuidModel):
 
+    on_site = CurrentSiteManager()
+
     objects = DeathReportTmgManager()
 
     history = HistoricalRecords()
-
-    on_site = CurrentSiteManager()
 
     class Meta:
         verbose_name_plural = 'Death report TMG 2'

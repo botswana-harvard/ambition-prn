@@ -43,11 +43,11 @@ class StudyTerminationConclusionW10(OffScheduleModelMixin, ActionItemModelMixin,
         blank=True,
         null=True)
 
+    on_site = CurrentSiteManager()
+
     objects = SubjectIdentifierManager()
 
     history = HistoricalRecords()
-
-    on_site = CurrentSiteManager()
 
     class Meta:
         verbose_name = 'W10 Study Termination/Conclusion'

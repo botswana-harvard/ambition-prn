@@ -120,14 +120,15 @@ class ProtocolDeviationViolation(NonUniqueSubjectIdentifierFieldMixin, SiteModel
         validators=[datetime_not_future],
         verbose_name=('Date and time report closed.'))
 
+    on_site = CurrentSiteManager()
+
     objects = TrackingIdentifierManager()
 
     history = HistoricalRecords()
 
-    on_site = CurrentSiteManager()
-
     def natural_key(self):
         return (self.tracking_identifier, )
+    natural_key.dependencies = ['sites.Site']
 
     class Meta:
         verbose_name = 'Protocol Deviation/Violation'

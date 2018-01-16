@@ -69,14 +69,15 @@ class DeathReport(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
     death_narrative = models.TextField(
         verbose_name='Narrative')
 
+    on_site = CurrentSiteManager()
+
     objects = SubjectIdentifierManager()
 
     history = HistoricalRecords()
 
-    on_site = CurrentSiteManager()
-
     def natural_key(self):
         return (self.subject_identifier, )
+    natural_key.dependencies = ['sites.Site']
 
     class Meta:
         verbose_name = 'Death Report'

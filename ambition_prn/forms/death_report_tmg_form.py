@@ -1,10 +1,12 @@
 from django import forms
 
+from edc_base.sites.forms import SiteModelFormMixin
+
 from ..form_validators import DeathReportFormValidator
 from ..models import DeathReportTmgOne, DeathReportTmgTwo
 
 
-class DeathReportTmgOneForm(forms.ModelForm):
+class DeathReportTmgOneForm(SiteModelFormMixin, forms.ModelForm):
 
     form_validator_cls = DeathReportFormValidator
 
@@ -13,7 +15,7 @@ class DeathReportTmgOneForm(forms.ModelForm):
         fields = '__all__'
 
 
-class DeathReportTmgTwoForm(forms.ModelForm):
+class DeathReportTmgTwoForm(SiteModelFormMixin, forms.ModelForm):
 
     form_validator_cls = DeathReportFormValidator
 

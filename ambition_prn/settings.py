@@ -19,6 +19,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_NAME = 'ambition_prn'
 ETC_DIR = os.path.join(BASE_DIR, 'etc')
 SITE_ID = 40
+REVIEWER_SITE_ID = 0
+
 RANDOMIZATION_LIST_PATH = os.path.join(
     BASE_DIR, APP_NAME, 'tests', 'test_randomization_list.csv')
 

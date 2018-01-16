@@ -4,8 +4,7 @@ from edc_action_item.model_mixins import ActionItemModelMixin
 from edc_base.model_fields.custom_fields import OtherCharField
 from edc_base.model_managers import HistoricalRecords
 from edc_base.model_mixins import BaseUuidModel
-from edc_base.model_validators import date_not_future, datetime_not_future
-from edc_base.utils import get_utcnow
+from edc_base.model_validators import date_not_future
 from edc_constants.choices import YES_NO, YES_NO_NA, NOT_APPLICABLE
 from edc_identifier.model_mixins import TrackingIdentifierModelMixin
 from edc_identifier.managers import SubjectIdentifierManager
@@ -156,11 +155,11 @@ class StudyTerminationConclusion(OffScheduleModelMixin, ActionItemModelMixin,
         blank=True,
         null=True)
 
+    on_site = CurrentSiteManager()
+
     objects = SubjectIdentifierManager()
 
     history = HistoricalRecords()
-
-    on_site = CurrentSiteManager()
 
     def save(self, *args, **kwargs):
         if not self.last_study_fu_date:

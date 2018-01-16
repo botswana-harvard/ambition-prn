@@ -1,11 +1,13 @@
 from django import forms
+from edc_base.sites.forms import SiteModelFormMixin
 from edc_form_validators import FormValidatorMixin
 
 from ..form_validators import StudyTerminationConclusionFormValidator
 from ..models import StudyTerminationConclusion
 
 
-class StudyTerminationConclusionForm(FormValidatorMixin, forms.ModelForm):
+class StudyTerminationConclusionForm(SiteModelFormMixin, FormValidatorMixin,
+                                     forms.ModelForm):
 
     form_validator_cls = StudyTerminationConclusionFormValidator
 

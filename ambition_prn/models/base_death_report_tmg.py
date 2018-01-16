@@ -55,6 +55,7 @@ class BaseDeathReportTmg(models.Model):
 
     def natural_key(self):
         return self.death_report.natural_key()
+    natural_key.dependencies = ['sites.Site']
 
     class Meta:
         abstract = True
