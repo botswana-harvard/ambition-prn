@@ -1,8 +1,7 @@
-from django.contrib.sites.managers import CurrentSiteManager
 from django.db import models
 from edc_base.model_managers import HistoricalRecords
 from edc_base.model_mixins import BaseUuidModel
-from edc_base.sites.site_model_mixin import SiteModelMixin
+from edc_base.sites import CurrentSiteManager, SiteModelMixin
 
 
 from .base_death_report_tmg import BaseDeathReportTmg
