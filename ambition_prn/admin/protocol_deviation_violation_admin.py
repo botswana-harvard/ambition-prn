@@ -18,6 +18,7 @@ class ProtocolDeviationViolationAdmin(ModelAdminMixin, admin.ModelAdmin):
             'fields': (
                 'subject_identifier',
                 'report_datetime',
+                'short_description',
                 'report_type',
             )}
          ),
@@ -62,14 +63,14 @@ class ProtocolDeviationViolationAdmin(ModelAdminMixin, admin.ModelAdmin):
         'violation_type': admin.VERTICAL,
     }
 
-    list_display = ('subject_identifier', 'dashboard',
+    list_display = ('subject_identifier', 'dashboard', 'short_description',
                     'report_datetime', 'status', 'action_required', 'report_type',
                     'tracking_identifier', 'action_identifier', 'user_created')
 
     list_filter = ('action_required', 'report_status',
                    'report_type')
 
-    search_fields = ('tracking_identifier',
+    search_fields = ('tracking_identifier', 'short_description',
                      'subject_identifier', 'action_identifier')
 
     def get_readonly_fields(self, request, obj=None):
