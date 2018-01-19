@@ -26,8 +26,17 @@ class ProtocolDeviationViolation(NonUniqueSubjectIdentifierFieldMixin, SiteModel
         verbose_name="Report Date and Time",
         default=get_utcnow)
 
+    short_description = models.CharField(
+        verbose_name='Provide a short description of this occurrence',
+        max_length=35,
+        null=True,
+        blank=False,
+        help_text=('Max 35 characters. Note: If this occurrence is a "violation" '
+                   'there is additional space below for a more detailed '
+                   'description'))
+
     report_type = models.CharField(
-        verbose_name='Report type',
+        verbose_name='Type of occurrence',
         max_length=25,
         choices=DEVIATION_VIOLATION)
 
