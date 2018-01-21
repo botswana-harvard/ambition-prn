@@ -118,6 +118,7 @@ TB_SITE_DEATH = (
     ('meningitis', 'Meningitis'),
     ('pulmonary', 'Pulmonary'),
     ('disseminated', 'Disseminated'),
+    (NOT_APPLICABLE, 'Not applicable')
 )
 
 YES_NO_ALREADY = (

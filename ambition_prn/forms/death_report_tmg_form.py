@@ -1,24 +1,21 @@
 from django import forms
 
 from edc_base.sites.forms import SiteModelFormMixin
+from edc_form_validators import FormValidatorMixin
 
-from ..form_validators import DeathReportFormValidator
-from ..models import DeathReportTmgOne, DeathReportTmgTwo
-
-
-class DeathReportTmgOneForm(SiteModelFormMixin, forms.ModelForm):
-
-    form_validator_cls = DeathReportFormValidator
-
-    class Meta:
-        model = DeathReportTmgOne
-        fields = '__all__'
+from ..form_validators import DeathReportTmgFormValidator
+from ..models import DeathReportTmg
 
 
-class DeathReportTmgTwoForm(SiteModelFormMixin, forms.ModelForm):
+class DeathReportTmgForm(SiteModelFormMixin, FormValidatorMixin, forms.ModelForm):
 
-    form_validator_cls = DeathReportFormValidator
+    form_validator_cls = DeathReportTmgFormValidator
+
+    subject_identifier = forms.CharField(
+        label='Subject identifier',
+        required=False,
+        widget=forms.TextInput(attrs={'readonly': 'readonly'}))
 
     class Meta:
-        model = DeathReportTmgTwo
+        model = DeathReportTmg
         fields = '__all__'

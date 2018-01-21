@@ -14,7 +14,7 @@ deathreport = Recipe(
     cause_of_death='art_toxicity',
     cause_of_death_other=None,
     tb_site='meningitis',
-    death_narrative=(
+    narrative=(
         'adverse event resulted in death due to cryptococcal meningitis'))
 
 studyterminationconclusion = Recipe(StudyTerminationConclusion)

@@ -48,7 +48,7 @@ class TestDeathFormValidations(TestCase):
         except forms.ValidationError as e:
             self.fail(f'ValidationError unexpectedly raised. Got{e}')
 
-    def test_cause_of_death_study_doc_opinion_death_narrative_none(self):
+    def test_cause_of_death_study_doc_opinion_other_none(self):
         cleaned_data = {
             'cause_of_death': OTHER,
             'cause_of_death_other': None}

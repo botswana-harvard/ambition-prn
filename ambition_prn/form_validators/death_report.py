@@ -1,4 +1,4 @@
-from edc_constants.constants import OTHER
+from edc_constants.constants import OTHER, CLOSED
 from edc_form_validators import FormValidator
 
 from ..constants import TUBERCULOSIS
@@ -23,3 +23,7 @@ class DeathReportFormValidator(StudyDayFormValidatorMixin, FormValidator):
             TUBERCULOSIS,
             field='cause_of_death',
             field_required='tb_site')
+
+        self.required_if(
+            CLOSED, field='report_status',
+            field_required='report_closed_datetime')

@@ -14,6 +14,7 @@ from edc_protocol.validators import datetime_not_before_study_start
 
 from ..action_items import DeathReportAction
 from ..choices import CAUSE_OF_DEATH, TB_SITE_DEATH
+from edc_constants.constants import NOT_APPLICABLE
 
 
 class DeathReport(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
@@ -24,13 +25,11 @@ class DeathReport(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
     tracking_identifier_prefix = 'DR'
 
     report_datetime = models.DateTimeField(
-        verbose_name="Report Date",
+        verbose_name='Report Date',
         validators=[
             datetime_not_before_study_start,
             datetime_not_future, ],
-        default=get_utcnow,
-        help_text=('If reporting today, use today\'s date/time, otherwise use '
-                   'the date/time this information was reported.'))
+        default=get_utcnow)
 
     death_datetime = models.DateTimeField(
         validators=[datetime_not_future],
@@ -48,24 +47,23 @@ class DeathReport(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
     cause_of_death = models.CharField(
         max_length=50,
         choices=CAUSE_OF_DEATH,
-        verbose_name='Main cause of death (opinion of local study Dr and '
-                     'local PI)',
-        help_text='Tick only 1:(NB. Fill in AE CRF)')
+        verbose_name=('Main cause of death'),
+        help_text=('Main cause of death in the opinion of the '
+                   'local study doctor and local PI'))
 
     cause_of_death_other = models.CharField(
         max_length=100,
         blank=True,
         null=True,
-        verbose_name='If other, please specify:')
+        verbose_name='If "Other" above, please specify')
 
     tb_site = models.CharField(
+        verbose_name='If cause of death is TB, specify site of TB disease',
         max_length=25,
         choices=TB_SITE_DEATH,
-        blank=True,
-        null=True,
-        verbose_name='If cause of death is TB, specify site of TB disease')
+        default=NOT_APPLICABLE)
 
-    death_narrative = models.TextField(
+    narrative = models.TextField(
         verbose_name='Narrative')
 
     on_site = CurrentSiteManager()
