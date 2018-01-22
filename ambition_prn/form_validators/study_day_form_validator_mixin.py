@@ -26,7 +26,7 @@ class StudyDayFormValidatorMixin:
             except AttributeError:
                 pass
             subject_identifier = subject_identifier or self.cleaned_data.get(
-                'subject_identifier')
+                'subject_identifier') or self.instance.subject_identifier
             if not subject_identifier:
                 raise ValueError(
                     f'Subject identifier cannot be None. See {repr(self)}')
