@@ -54,6 +54,7 @@ class DeathReportAction(Action):
     singleton = True
 
     def get_next_actions(self):
+        self.delete_if_new(action_cls=DeathReportTmgAction)
         next_actions = [DeathReportTmgAction]
         on_schedule_w10_model_cls = django_apps.get_model(
             'ambition_prn.onschedulew10')
@@ -86,6 +87,7 @@ class DeathReportTmgAction(Action):
 
     def get_next_actions(self):
         next_actions = []
+        self.delete_if_new(action_cls=self)
         try:
             self.reference_model_cls().objects.get(
                 death_report=self.model_obj.death_report)

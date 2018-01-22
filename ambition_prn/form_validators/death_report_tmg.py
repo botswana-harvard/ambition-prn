@@ -9,6 +9,8 @@ class DeathReportTmgFormValidator(FormValidator):
 
     def clean(self):
 
+        death_report = self.cleaned_data.get(
+            'death_report') or self.instance.death_report
         self.required_if(
             CLOSED, field='report_status',
             field_required='cause_of_death',
@@ -21,14 +23,14 @@ class DeathReportTmgFormValidator(FormValidator):
 
         if self.cleaned_data.get('cause_of_death'):
             if (self.cleaned_data.get('cause_of_death_agreed') == NO
-                    and self.instance.death_report.cause_of_death == self.cleaned_data.get(
+                    and death_report.cause_of_death == self.cleaned_data.get(
                         'cause_of_death')):
                 raise forms.ValidationError({
                     'cause_of_death_agreed':
                     ('Cause of death reported by the study doctor matches '
                      'your assessment.')})
             elif (self.cleaned_data.get('cause_of_death_agreed') == YES
-                    and self.instance.death_report.cause_of_death != self.cleaned_data.get(
+                    and death_report.cause_of_death != self.cleaned_data.get(
                         'cause_of_death')):
                 raise forms.ValidationError({
                     'cause_of_death_agreed':
