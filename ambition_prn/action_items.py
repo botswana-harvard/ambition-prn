@@ -1,7 +1,8 @@
-from django.apps import apps as django_apps
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from edc_action_item import Action, HIGH_PRIORITY, site_action_items
 from edc_constants.constants import CLOSED
+
+from django.apps import apps as django_apps
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.safestring import mark_safe
 
 
