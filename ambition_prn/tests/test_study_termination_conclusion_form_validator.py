@@ -10,7 +10,6 @@ from edc_registration.models import RegisteredSubject
 from ..constants import CONSENT_WITHDRAWAL
 from ..form_validators import StudyTerminationConclusionFormValidator
 from ..models import DeathReport
-from .models import PatientHistory, SubjectVisit
 
 
 class TestStudyTerminationConclusionFormValidator(TestCase):
@@ -26,24 +25,11 @@ class TestStudyTerminationConclusionFormValidator(TestCase):
 
     def setUp(self):
 
-        StudyTerminationConclusionFormValidator.patient_history_model = (
-            'ambition_prn.patienthistory')
-
         self.subject_identifier = '12345'
         RegisteredSubject.objects.create(
             subject_identifier=self.subject_identifier)
-        subject_visit = SubjectVisit.objects.create(
-            subject_identifier=self.subject_identifier)
-
-        PatientHistory.objects.create(
-            subject_visit=subject_visit,
-            first_arv_regimen=NOT_APPLICABLE)
 
     def test_termination_reason_death_no_death_form_invalid(self):
-        #         DeathReport.objects.create(
-        #             subject_identifier=self.subject_identifier,
-        #             death_datetime=get_utcnow(),
-        #             study_day=1)
 
         cleaned_data = {'subject_identifier': self.subject_identifier,
                         'termination_reason': DEAD,
@@ -112,6 +98,7 @@ class TestStudyTerminationConclusionFormValidator(TestCase):
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn('readmission_date', form_validator._errors)
 
+    @tag('1')
     def test_died_no_death_date_invalid(self):
         DeathReport.objects.create(
             subject_identifier=self.subject_identifier,
@@ -126,6 +113,7 @@ class TestStudyTerminationConclusionFormValidator(TestCase):
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn('death_date', form_validator._errors)
 
+    @tag('1')
     def test_died_death_date_mismatch(self):
         DeathReport.objects.create(
             subject_identifier=self.subject_identifier,
@@ -139,7 +127,9 @@ class TestStudyTerminationConclusionFormValidator(TestCase):
             cleaned_data=cleaned_data)
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn('death_date', form_validator._errors)
+        print(form_validator._errors)
 
+    @tag('1')
     def test_died_death_date_ok(self):
         dte = get_utcnow()
         DeathReport.objects.create(

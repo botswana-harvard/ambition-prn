@@ -7,6 +7,7 @@ from edc_base.model_validators import datetime_not_future
 from edc_base.sites import CurrentSiteManager, SiteModelMixin
 from edc_base.utils import get_utcnow
 from edc_constants.choices import YES_NO
+from edc_constants.constants import NOT_APPLICABLE
 from edc_identifier.managers import SubjectIdentifierManager
 from edc_identifier.model_mixins import TrackingIdentifierModelMixin
 from edc_identifier.model_mixins import UniqueSubjectIdentifierFieldMixin
@@ -14,7 +15,6 @@ from edc_protocol.validators import datetime_not_before_study_start
 
 from ..action_items import DeathReportAction
 from ..choices import CAUSE_OF_DEATH, TB_SITE_DEATH
-from edc_constants.constants import NOT_APPLICABLE
 
 
 class DeathReport(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
@@ -28,7 +28,7 @@ class DeathReport(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
         verbose_name='Report Date',
         validators=[
             datetime_not_before_study_start,
-            datetime_not_future, ],
+            datetime_not_future],
         default=get_utcnow)
 
     death_datetime = models.DateTimeField(
