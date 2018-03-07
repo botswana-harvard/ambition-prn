@@ -127,7 +127,6 @@ class TestStudyTerminationConclusionFormValidator(TestCase):
             cleaned_data=cleaned_data)
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn('death_date', form_validator._errors)
-        print(form_validator._errors)
 
     @tag('1')
     def test_died_death_date_ok(self):
